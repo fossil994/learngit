@@ -1,0 +1,94 @@
+Git学习笔记（根据廖雪峰教程）：
+	最流行的分布式版本控制系统。
+	版本库（Repository）：
+	工作区有一个隐藏目录.git，这个不算工作区，而是Git的版本库。Git的版本库里存了很多东西，其中最重
+	要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支master，以及指向
+	master的一个指针叫HEAD。
+
+	1）. 吧文件添加到版本库：git add <需要提交的文件>		//文件保存在一个暂存区（stage)中，需要commit操作
+		吧缓存器的文件提交到仓库：git commit -m "<message描述文字>"
+	2）.查看仓库状态：git status,	查看提交文件的不同，git diff <文件>
+	
+	3）.git log :显示最近到最远的提交日志
+	
+	4）.git reset --hard HEAD^ :回退，Git使用HEAD 表示当前版本，上一个版本就时 HEAD^,上上一个版本就是
+		HEAD^^,当然往上100个版本写100个^比较容易数不过来，所以写成HEAD~100.
+		
+	5）.git reset --hart <commit ID号>：直接回转到提交id号当前版本。
+			git reflog:查看历史提交，查看需要回到的版本号。
+	
+	6）.git checkout --<文件> : 撤销修改，让这个文件回到最近一次git commit或git add时的状态。
+			也可以用 git reset HEAD <文件> ：吧暂存区的修改撤销掉，重新回到工作区。
+	7）.rm <文件> ：删除文件  或者：git rm <文件>, git commit -m "<注释>".
+	
+	8）.git checkout -- <文件>：删错了，因为版本库里还有呢，所以可以很轻松地把误删的文件恢复到最新版本
+	
+	9）.在本地仓库添加远程仓库：git remote add origin git@github.com:<github名>/<远程仓库名称>.git
+	
+	10） .要关联一个远程库，使用命令git remote add origin git@server-name:path/repo-name.git；
+
+			关联后，使用命令git push -u origin master第一次推送master分支的所有内容；
+
+			此后，每次本地提交后，只要有必要，就可以使用命令git push origin master推送最新修改；
+	
+	11） .git clone git@github.com:<github名>/<远程仓库名称>.git :用命令git clone克隆一个本地库
+	
+	
+	分支：
+				
+	1） . git checkout -b <分支名> :创建dev分支，然后切换到dev分支
+	
+	2） .git branch :查看当前分支
+	
+	3） .git checkout <分支名> :切换回分支
+	 
+	4） .git merge dev :吧dev分支的工作合并到master分支上 
+	
+	5） .git branch -d dev :合并完后可删除分支，或者 -D 强制删除
+	
+	6） .git log --graph --pretty=oneline --abbrev-commit :看到分支的合并情况
+	
+	7） . git merge --no-ff -m "merge with no-ff" <分支> :准备合并分支，请注意--no-ff参数，
+			表示禁用Fast forward  ..合并分支时，加上--no-ff参数就可以用普通模式合并，
+			合并后的历史有分支，能看出来曾经做过合并，而fast forward合并就看不出来曾经做过合并.
+			
+	8） .git stash :把当前工作现场“储藏”起来，等以后恢复现场后继续工作
+	
+	9） .首先确定要在哪个分支上修复bug，假定需要在master分支上修复，就从master创建临时分支:
+			git checkout master :切换回master
+			it checkout -b issue-101 ：创建分支issue-101，在该分支上修复bug,修复完，合并分支，删除该分支
+			
+	10） .git remote :查看远程库的信息
+	
+	11） .git remote -v :显示远程仓库更详细的信息
+	
+	12） .git push origin master/dev :推送分支，就是把该分支上的所有本地提交推送到远程库。推送时，要指定本地分
+	支，这样，Git就会把该分支推送到远程库对应的远程分支上
+	
+	13） .git clone git@github.com:<github名>/<>远程仓库名称.git
+	
+	14） .git checkout -b dev origin/dev :创建远程origin的dev分支到本地，于是他用这个命令创建本地dev分支.
+	
+	 多人协作的工作模式通常是这样：
+
+	a.首先，可以试图用git push origin <branch-name>推送自己的修改；
+	b.如果推送失败，则因为远程分支比你的本地更新，需要先用git pull试图合并；
+	c.如果合并有冲突，则解决冲突，并在本地提交；
+	d.没有冲突或者解决掉冲突后，再用git push origin <branch-name>推送就能成功！
+	e.如果git pull提示no tracking information，则说明本地分支和远程分支的链接关系没有创建，
+		用命令git branch --set-upstream-to <branch-name> origin/<branch-name>。
+
+	15）.git tag v1.0 :打一个新标签
+	
+	16）.git tag :查看所有标签
+	
+	17）.git tag -a <tagname> -m "blablabla..." :可以指定标签信息
+	
+	18）.git tag -d v0.1 :删除标签
+	
+	19）.git push origin v1.0  /git push origin --tags :推送某个标签到远程/次性推送全部尚未推送到远程的本地标签
+	
+	20）删除远程标签就麻烦一点，先从本地删除,然后，从远程删除
+
+		a）.git tag -d v0.9
+		b）.git push origin :refs/tags/v0.9
