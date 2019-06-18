@@ -5,7 +5,7 @@ Git学习笔记（根据廖雪峰教程）：
 	要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支master，以及指向
 	master的一个指针叫HEAD。
 
-	1）. 吧文件添加到版本库：git add <需要提交的文件>		//文件保存在一个暂存区（stage)中，需要commit操作
+	1）. 吧文件添加到版本库：git add <需要添加的文件>		//文件保存在一个暂存区（stage)中，需要commit操作
 		吧缓存器的文件提交到仓库：git commit -m "<message描述文字>"
 	2）.查看仓库状态：git status,	查看提交文件的不同，git diff <文件>
 	
